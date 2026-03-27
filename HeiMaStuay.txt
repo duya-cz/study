@@ -100,3 +100,136 @@ Connection: keep-alive
   "data": null
 }
 
+调用API，创建key
+示例deepseek
+
+（url地址）
+curl https://api.deepseek.com/chat/completions \   
+
+（请求头key:value） 
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${DEEPSEEK_API_KEY}" \
+
+请求体数据（json格式）（是前端的一种对象表示方式，类似Python中的自带你，都是key:value形式。不过所有的key都是用双引号引起的，值可以是任意类型
+                      对象：用{}表示，{}之间是键值对形式，键是字符串（双引号引起来），值可以是任意类型
+                      数字：整数和小数都是
+                      字符串：用""引起了，例如："jack"
+                      布尔：有两个,true或false。与Python中不一样，是小写的，且不用双引号
+                      列表：用[]表示，[]中是列表的元素，用,隔开
+  -d '{
+        "model": "deepseek-chat",
+        "messages": [
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": "Hello!"}
+        ],
+        "stream": false
+      }'
+
+model后边的就是大模型的版本
+messages[]就是我们要提供给大模型的信息
+role: "system" 表示这是一条系统消息，其 content 是你对模型行为的指令、设定、角色定义或约束。
+role: "user" 表示这是一条用户消息，其 content 是用户输入的内容（可以是提问、陈述、指令等）。
+stream：flase 为非流式输出，即一下全部输出完，true为流式输出，即一个字一个字输出，需要自动整合
+
+于APIfox中进行deepseek大模型的测试
+
+pots方法
+url地址：https://api.deepseek.com/v1/chat/completions
+请求头：
+  参数名：Content-Type   参数值：application/json
+  参数名：Authorization  参数值：sk-fed12248c67e425abe618459a0af1d08（deepseek的APIkey）
+请求体：
+  {
+        "model": "deepseek-chat",
+        "messages": [
+          {"role": "system", "content": "你的名字是大傻春"},
+          {"role": "user", "content": "你的名字是什么？"}
+        ],
+        "stream": false
+      }
+
+回复：
+{
+    "id": "94082626-fb0c-4f81-bc64-95422ff2e573",
+    "object": "chat.completion",
+    "created": 1774600654,
+    "model": "deepseek-chat",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",（assistant表示是大模型根据你提供的信息进行的回复）
+                "content": "我的名字是“大傻春”！有什么可以帮你的吗？😊"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {                  （本次大模型对话消耗了多少token）
+        "prompt_tokens": 13,     (发送信息消耗的token)
+        "completion_tokens": 16, (回复信息消耗的token)
+        "total_tokens": 29,      (总共多少token)
+        "prompt_tokens_details": {
+            "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 13
+    },
+    "system_fingerprint": "fp_eaab8d114b_prod0820_fp8_kvcache_new_kvcache"
+}
+
+每次快捷请求都是相互独立的会话，没有记忆的能力
+（AI大模型本身是没有会话记忆的能力的）（目前网页的大模型解决了这个问题）
+
+会话记忆的处理方案就是会话历史滚雪球，也就是将每一次的设定、提问、回答都重复再次交给大模型，并进行本次的提问
+例如：
+"messages": [
+          {"role": "system", "content": "你的名字是大傻春"},
+          {"role": "user", "content": "你的名字是什么？"},
+          {"role": "assistant","content": "我的名字是“大傻春”！有什么可以帮你的吗？😊"},
+          {"role":"user","content":"帮我计算1+1等于几"}
+        ],
+
+"message": {
+                "role": "assistant",
+                "content": "1 + 1 = 2！  \n需要我帮你算点更复杂的吗？😄"
+            },
+
+
+调用本地大模型
+post  url地址：http://localhost:11434/api/chat
+body  json
+不需要key，url的那个地址就代表的是自己本地的ollama，进而调用本地的模型
+
+{
+  "model": "qwen2.5:7b",
+  "messages": [
+    {"role": "system", "content": "你叫沈腾。无论用户问你什么，你都必须先以“我叫沈腾”开头回答。不要提任何其他身份。"},
+    {"role": "user", "content": "你的名字是什么？"}
+  ],
+  "stream": false
+}
+和之前的不同，本地模型（尤其是开源模型）对 system 角色的响应强度各不相同，有些模型需要非常明确的指令才能覆盖默认行为。
+有效的 system 指令技巧：直接、具体、可操作，例如：“你必须以‘我叫沈腾’开头回答。”加入“无论用户问什么，都先……”等约束，提高指令权重。可以重复强调核心规则，或者将指令嵌入到助手的第一条消息中（通过 assistant 角色预设）。
+
+{
+    "model": "deepseek-r1:7b ",
+    "created_at": "2026-03-27T09:52:14.2968597Z",
+    "message": {
+        "role": "assistant",
+        "content": "我叫沈腾。",
+        "thinking": "好，现在有个用户让我以“我叫沈腾”的格式来回答问题，并且特别强调不要提到任何其他身份。首先，我需要确认自己是否真的叫沈腾，如果没的话可能需要调整一下。\n\n假设我现在叫沈腾，那这个问题就是问我的名字。所以我要直接回应名字，同时遵循用户的指示，开头是“我叫沈腾”。然后不需要额外的信息或解释，保持简洁明了。\n\n另外，用户可能是测试我的反应或者想看看我是否真的符合设定。因此，严格按照要求来，不添加任何多余的内容。\n"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 5031510500,
+    "load_duration": 122089500,
+    "prompt_eval_count": 38,
+    "prompt_eval_duration": 113972300,
+    "eval_count": 129,
+    "eval_duration": 4587128100
+}
+注意，这个时候我将使用的大模型换成了deepseek-r1:7b，进而给出的回答
+有深度思考模式的大模型，会在返回信息的下方加上thinking，也就是思考过程
+想要保持会话记忆功能，依旧是重复那个过程，只是思考thinking过程不需要了
+？
