@@ -1,0 +1,102 @@
+IP地址可理解为设备在互联网中的地址（唯一身份证），每个接入网络的设备都有一个自己的IP地址，用来定位在互联网中的位置
+IP地址分为IPv4和IPv6两种，IPv4地址由32位二进制数表示，通常以点分十进制形式表示，例如192.168.1.1；IPv6地址由128位二进制数表示，通常以冒号分隔的十六进制形式表示，例如132.12.86.125
+域名是IP地址的别名，方便人们记忆和使用，例如www.baidu.com就是一个域名，它对应一个IP地址。域名系统（DNS）负责将域名解析为IP地址，使得用户可以通过域名访问互联网资源。
+端口是计算机网络中的一个概念，用于标识不同的服务或应用程序。每个IP地址可以有多个端口，每个端口对应一个特定的服务。例如，HTTP服务通常使用端口80，HTTPS服务使用端口443。通过指定端口号，计算机可以将数据发送到正确的应用程序或服务。
+端口号是整数，范围从0到65535，其中0到1023是系统保留端口，通常用于常见的服务和协议，例如HTTP、FTP等；1024到49151是注册端口，供用户或应用程序使用；49152到65535是动态或私有端口，通常用于临时通信或自定义应用程序。   
+
+网络模型
+OSI七层模型：物理层、数据链路层、网络层、传输层、会话层、表示层、应用层
+TCP/IP四层模型：网络接口层、互联网层、传输层、应用层
+HTTP协议：超文本传输协议，是一种应用层协议，用于在客户端和服务器之间传输超文本数据。HTTP协议基于TCP/IP协议，使用请求-响应模式进行通信，常用于Web浏览器和Web服务器之间的数据交换。
+只有在请求及响应中都遵循了统一的规则，服务端才能读懂客户端发送的请求，客户端才能解析服务端响应的结果
+特点：1、基于文本的协议：请求和响应的协议内容为文本格式，底层通过TCP协议传输，稳定性强
+    2、基于请求-响应模式：必须由客户端先发送请求，服务器才会处理请求并返回响应。一次请求对应一次响应
+    3、无状态协议：每次请求都是独立的，服务器不会保留客户端的状态信息。为了实现状态管理，可以使用Cookie或Session等机制。
+
+HTTP协议-请求数据格式
+   请求行（请求方式、资源路径、协议）
+POST /api/courses HTTP/1.1   
+
+   请求头（格式Key:value）
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Connection: keep-alive
+Content-Length: 139
+Content-Type: application/json
+Host: localhost:90
+Origin: http://localhost:90
+Referer: http://localhost:90/resource/course
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/143.0.0.0  
+
+请求体（请求参数方式，GET没有，POST可以有）
+{
+  "phone": "18808088080",
+  "channel": 1,
+  "name": "虎炮",
+  "gender": 1,
+  "age": "32"
+}
+
+请求方法：
+        GET：请求参数在请求行，没有请求体，如：/api/courses?name=Python&status=1  GET在请求请求参数大小在浏览器中有限制
+        POST：请求参数在请求体中，POST请求大小没有限制
+
+
+
+https://www.baidu.com/s?wd=%E6%B2%83%E5%B0%94%E6%B2%83%E6%8A%A5%E4%BB%B7&tn=52176495_dg&ch=3&ie=utf-8
+https://www.baidu.com/s?wd=沃尔沃报价&tn=52176495_dg&ch=3&ie=utf-8
+请求方法是GET
+请求URL就是上面的网址，就是请求路径，GET将请求参数写进去了
+wd=沃尔沃报价  就是第一个参数
+& 是and符
+tn=52176495_dg 是第二个参数
+ch=3 是第三个
+ie=utf-8 是第四个
+
+请求行
+GET /s?wd=%E6%B2%83%E5%B0%94%E6%B2%83%E6%8A%A5%E4%BB%B7&tn=52176495_dg&ch=3&ie=utf-8 HTTP/1.1   
+请求头
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cache-Control: max-age=0
+Connection: keep-alive
+Cookie: BAIDUID=40C907C59210AA5D79DDC8427668025D:FG=1; BIDUPSID=40C907C59210AA5D79DDC8427668025D; PSTM=1774496994; BD_UPN=12314753; BDORZ=FFFB88E999055A3F8A630C64834BD6D0; BDSFRCVID=HXLOJexroGWw2V6EvQUrEHtYogKK0gOTDYrEjwVLxVfaQfPV1QB3EG0PtD6qJpAhQ5mfogKKLgOTHUQIdm02QJVKOE6XlFPKba3gtf8g0M5; H_BDCLCKID_SF=JR4H_CIhfCK3fP36q4Oo5tD_hgT22-usLKJT2hcHMPoosU36D6rGQJKi34b4Bn3kaKviaKJjBMbUotoHXRtWjJ0L3G5BLTvptmQtBq5TtUJM8nI42MomXj0SM2cyKMniBIv9-pnGLlTfDDt40f64yURbKtcC5Mbdb2LHaPbDfn028DKujjDajT5QjaLs5-70KK0X3RRVM45_KROvhjR1WMAgyxoObtRxQ5kH-DQNbfjlql5S5hrobUPUDMJ9LU3k-eTBLMQ1MUQtHfjI0hDa0fjyQttjQn3RJj6ZQpjSLC5VeR7TyURdbU47yboIB43LtnrIafQcBhK-obRD0MRD-jts5MDOK5OuJRQ2QJ8BJI-WMIQP; BDSFRCVID_BFESS=HXLOJexroGWw2V6EvQUrEHtYogKK0gOTDYrEjwVLxVfaQfPV1QB3EG0PtD6qJpAhQ5mfogKKLgOTHUQIdm02QJVKOE6XlFPKba3gtf8g0M5; H_BDCLCKID_SF_BFESS=JR4H_CIhfCK3fP36q4Oo5tD_hgT22-usLKJT2hcHMPoosU36D6rGQJKi34b4Bn3kaKviaKJjBMbUotoHXRtWjJ0L3G5BLTvptmQtBq5TtUJM8nI42MomXj0SM2cyKMniBIv9-pnGLlTfDDt40f64yURbKtcC5Mbdb2LHaPbDfn028DKujjDajT5QjaLs5-70KK0X3RRVM45_KROvhjR1WMAgyxoObtRxQ5kH-DQNbfjlql5S5hrobUPUDMJ9LU3k-eTBLMQ1MUQtHfjI0hDa0fjyQttjQn3RJj6ZQpjSLC5VeR7TyURdbU47yboIB43LtnrIafQcBhK-obRD0MRD-jts5MDOK5OuJRQ2QJ8BJI-WMIQP; ZFY=utolnBmfux:B:A7SaFdsAeUj2BFnHkm6A:BF:Bj5GD1xEEw:C; BAIDUID_BFESS=40C907C59210AA5D79DDC8427668025D:FG=1; BDRCVFR[7lG8H8cH5k_]=mk3SLVN4HKm; delPer=0; BD_CK_SAM=1; PSINO=3; BA_HECTOR=042l8k010g018l208ga024858l0g251ks9tem26; H_PS_PSSID=60278_63147_67722_67861_67884_67942_67974_68041_67986_68004_68133_68146_68192_68221_68231_68255_68263_68287_68313_68343_68379_68355_68422_68432_68447_68528_68542_68552_68506_68518_68593; H_PS_645EC=f946ZcMJ5e72sIgskr3gDrgeJbuihuzcP7fOo8P3A6VQyeqHkO84qKevZwFpJMxwPR4; COOKIE_SESSION=23288_0_7_7_6_18_1_0_3_6_0_3_6831_0_0_0_1774511081_0_1774534366%7C9%230_0_1774534366%7C1; ab_sr=1.0.1_MjY4YjFkZjQ2YzFkMGRlOWIzNmJhMjlkMjkwNDQ5ZWU3NTZmZjBkNGNiOGI3NDI2MTQwYjc5NmVlMTcyOTUyNDEzYWMyYWY5YmI1OTE5OTMxYjY5Y2MyZmJmMjIxNGUyMTg0ZGEzM2JiY2E2ZTA2NzE5NDcxODQxZTNjZWVkNjAxYmZiNmVhNzUxYjZlNzE5ODBiMzRhYWI0MzAxMTc0YjU1YzIzY2FhNTdjY2RiNzA2ZjQxZGU0NmI3NGNmMjQ1ZmQxMTYyNDk1ZTM2MjgyZmZhMjJkMDkyN2UwNmMwZWY=; RT="z=1&dm=baidu.com&si=da9771b8-e1a2-4efd-8204-4e68ae3bf928&ss=mn7k1gyt&sl=3&tt=4fe&bcn=https%3A%2F%2Ffclog.baidu.com%2Flog%2Fweirwood%3Ftype%3Dperf&ld=87y"
+Host: www.baidu.com
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: cross-site
+Sec-Fetch-User: ?1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0
+请求体（GET）
+sec-ch-ua: "Chromium";v="146", "Not-A.Bra
+
+
+HTTP协议-响应数据格式
+
+响应行（协议、状态码） 
+HTTP/1.1 200  
+         200：客户端请求成功
+         400：请求参数错误
+         404：请求资源不存在，url输入有误，或网站资源被删除
+         500：服务器发生不可预期的错误
+
+响应头（格式key:value）
+Server: nginx/1.24.0
+Date: Tue, 16 Dec 2025 12:38:08 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+
+响应体（存放服务端响应的数据）
+{
+  "code": 1,
+  "msg": "success",
+  "data": null
+}
+
