@@ -18,6 +18,8 @@ client = OpenAI(
 
 # 进行交互 
 response = client.chat.completions.create(
+# client.chat.completions.create()方法，用于创建一个让AI模型回复的对象
+
     model="deepseek-chat",
     messages=[
         {
