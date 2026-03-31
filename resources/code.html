@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息练习表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .email-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+        .status-inactive {
+            color: red;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>内部用户信息列表</h1>
+    <p>以下是系统生成的测试数据，仅供学习使用。</p>
+    
+    <table id="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>城市</th>
+                <th>邮箱</th>
+                <th>手机号</th>
+                <th>状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="user-row" data-id="1001">
+                <td class="uid">1001</td>
+                <td class="name">张伟</td>
+                <td class="age">28</td>
+                <td class="gender">男</td>
+                <td class="city">北京</td>
+                <td><a href="mailto:zhangwei@example.com" class="email-link">zhangwei@example.com</a></td>
+                <td class="phone">13800138001</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1002">
+                <td class="uid">1002</td>
+                <td class="name">李娜</td>
+                <td class="age">34</td>
+                <td class="gender">女</td>
+                <td class="city">上海</td>
+                <td><a href="mailto:lina@example.com" class="email-link">lina@example.com</a></td>
+                <td class="phone">13900139002</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1003">
+                <td class="uid">1003</td>
+                <td class="name">王强</td>
+                <td class="age">45</td>
+                <td class="gender">男</td>
+                <td class="city">广州</td>
+                <td><a href="mailto:wangqiang@example.com" class="email-link">wangqiang@example.com</a></td>
+                <td class="phone">13700137003</td>
+                <td><span class="status-inactive">离职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1004">
+                <td class="uid">1004</td>
+                <td class="name">刘敏</td>
+                <td class="age">29</td>
+                <td class="gender">女</td>
+                <td class="city">深圳</td>
+                <td><a href="mailto:liumin@example.com" class="email-link">liumin@example.com</a></td>
+                <td class="phone">13600136004</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1005">
+                <td class="uid">1005</td>
+                <td class="name">陈杰</td>
+                <td class="age">31</td>
+                <td class="gender">男</td>
+                <td class="city">杭州</td>
+                <td><a href="mailto:chenjie@example.com" class="email-link">chenjie@example.com</a></td>
+                <td class="phone">13500135005</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1006">
+                <td class="uid">1006</td>
+                <td class="name">杨洋</td>
+                <td class="age">26</td>
+                <td class="gender">女</td>
+                <td class="city">成都</td>
+                <td><a href="mailto:yangyang@example.com" class="email-link">yangyang@example.com</a></td>
+                <td class="phone">13400134006</td>
+                <td><span class="status-inactive">离职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1007">
+                <td class="uid">1007</td>
+                <td class="name">赵磊</td>
+                <td class="age">38</td>
+                <td class="gender">男</td>
+                <td class="city">武汉</td>
+                <td><a href="mailto:zhaolei@example.com" class="email-link">zhaolei@example.com</a></td>
+                <td class="phone">13300133007</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1008">
+                <td class="uid">1008</td>
+                <td class="name">孙丽</td>
+                <td class="age">42</td>
+                <td class="gender">女</td>
+                <td class="city">西安</td>
+                <td><a href="mailto:sunli@example.com" class="email-link">sunli@example.com</a></td>
+                <td class="phone">13200132008</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1009">
+                <td class="uid">1009</td>
+                <td class="name">周涛</td>
+                <td class="age">33</td>
+                <td class="gender">男</td>
+                <td class="city">南京</td>
+                <td><a href="mailto:zhoutao@example.com" class="email-link">zhoutao@example.com</a></td>
+                <td class="phone">13100131009</td>
+                <td><span class="status-inactive">离职</span></td>
+            </tr>
+            <tr class="user-row" data-id="1010">
+                <td class="uid">1010</td>
+                <td class="name">吴婷</td>
+                <td class="age">27</td>
+                <td class="gender">女</td>
+                <td class="city">重庆</td>
+                <td><a href="mailto:wuting@example.com" class="email-link">wuting@example.com</a></td>
+                <td class="phone">13000130010</td>
+                <td><span class="status-active">在职</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        &copy; 2023 练习用虚拟数据系统 | 页面生成时间：2023-10-27
+    </div>
+</div>
+
+</body>
+</html>
