@@ -13,7 +13,7 @@ document=html.fromstring(response.text)
 # 解析数据
 th_list=document.xpath('//table[@id="top20"]/thead/tr/th/text()')
 # 输出数据
-print(th_list)
+print(th_list) 
 
 # 解析表格数据
 tr_list=document.xpath('//table[@id="top20"]/tbody/tr')
