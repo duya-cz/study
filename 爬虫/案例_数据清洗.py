@@ -3,12 +3,12 @@
 通过语法对复杂文本进行搜索、匹配、提取和替换工资高
 import re
 # 只搜索一个匹配项（返回match对象）
-re.match() 从字符串开头匹配字符串，返回匹配到的内容，如果没有匹配到，则返回None
-re.search() 从字符串任意位置中搜索正则表达式匹配的字符，返回匹配到的内容，如果没有匹配到，则返回None
-().group() 返回匹配到的内容
-().span() 获取匹配到的字符的索引位置(在字符串的下标位置范围)
-().start() 获取匹配到的字符的开头字符索引位置(在字符串的索引位置)
-().end() 获取匹配到的字符的结尾字符索引位置(在字符串的索引位置)
+re.match(表达式) 从字符串开头匹配字符串，返回匹配到的内容，如果没有匹配到，则返回None
+re.search(表达式) 从字符串任意位置中搜索正则表达式匹配的字符，返回匹配到的内容，如果没有匹配到，则返回None
+(返回值).group() 返回匹配到的内容
+(返回值).span() 获取匹配到的字符的索引位置(在字符串的下标位置范围)
+(返回值).start() 获取匹配到的字符的开头字符索引位置(在字符串的索引位置)
+(返回值).end() 获取匹配到的字符的结尾字符索引位置(在字符串的索引位置)
 
 
 # 任意位置开始，搜索所有的匹配项（返回list对象）
@@ -20,8 +20,9 @@ import os
 import requests 
 import csv
 from lxml import html
+import re
 
-Movie_List_File="爬虫/csv_data/ovie_list.csv"
+Movie_List_File="爬虫/csv_data/movie_list2.csv"
 Base_url='http://www.themoviedb.org'
 Top_url='http://www.themoviedb.org/movie/top-rated'
 Top_url_2='http://www.themoviedb.org/discover/movie/items'
@@ -43,10 +44,10 @@ def get_movie_info(url):
 
     movie_data={
         '电影名':name[0].strip() if name else '',
-        '年份':year[0].strip() if year else '',
-        '上映日期':date[0].strip() if date else '',
+        '年份':get_movie_year(year),
+        '上映日期':get_movie_date(date),
         '类型':','.join(tags) if tags else '',
-        '时长':runtime[0].strip() if runtime else '',
+        '时长':get_movie_time(runtime),
         '评分':score[0].strip() if score else '',
         '语言':language[0].strip() if language else '',
         '导演':directors[0].strip() if directors else '',
@@ -65,6 +66,26 @@ def save_csv(all_movies):
        writer= csv.DictWriter(csvfile, fieldnames=['电影名', '年份', '上映日期', '类型', '时长', '评分', '语言', '导演', '作者', '介绍'])
        writer.writeheader()
        writer.writerows(all_movies)
+
+# 清洗一下获取的年份数据
+def get_movie_year(year):
+    years=year[0].strip() if year else ''
+    return years.replace("(","").replace(")","")
+
+# 清洗一下获取的上映日期数据
+def get_movie_date(date):
+    dates=date[0].strip() if date else ''
+    return re.search(r'\d{4}-\d{2}-\d{2}', dates).group()
+
+# 清洗一下获取的时长数据
+def get_movie_time(runtime):
+    times=runtime[0].strip() if runtime else ''
+    h=re.search(r'(\d+)h',times)
+    m=re.search(r'(\d+)m',times)
+    h=int(h.group(1)) if h else 0
+    m=int(m.group(1)) if m else 0
+    return h*60+m
+
 
 def main():
     all_movies=[]
